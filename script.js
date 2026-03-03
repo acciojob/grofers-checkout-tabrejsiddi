@@ -1,33 +1,43 @@
 const getSumBtn = document.createElement("button");
 getSumBtn.append("Get Total Price");
 document.body.appendChild(getSumBtn);
-const ans = document.createElement("div");
-ans.id = "ans";
-document.body.appendChild(ans);
 
 const getSum = () => {
-  const prices = document.querySelectorAll(".prices");
-  let total = 0;
+//Add your code here
+const priceCells = document.querySelectorAll(".price");
 
-  prices.forEach(price => {
-    const val = parseFloat(price.textContent || price.innerText);
-    if (!isNaN(val)) total += val;
-  });
+    let total = 0;
+    priceCells.forEach(cell => {
+        const priceText = cell.textContent.trim();
+        const priceValue = parseFloat(priceText);
 
-  ans.textContent = total;
-  const existingTotal = document.getElementById("total-row");
-  if (existingTotal) existingTotal.remove();
+        if (!isNaN(priceValue)) {
+            total += priceValue;
+        }
+    });
+    const existingTotal = document.querySelector("#total-row");
+    if (existingTotal) {
+        existingTotal.remove();
+    }
+    const table = document.querySelector("table");
+    if (!table) return; 
 
-  const table = document.querySelector("table");
-  if (table) {
-    const newRow = document.createElement("tr");
-    newRow.id = "total-row";
-    const newCell = document.createElement("td");
-    newCell.setAttribute("colspan", "2");
-    newCell.textContent = total;
-    newRow.appendChild(newCell);
-    table.appendChild(newRow);
-  }
+    const totalRow = document.createElement("tr");
+    totalRow.id = "total-row";
+
+    const totalCell = document.createElement("td");
+    totalCell.colSpan = 2;                    
+    totalCell.style.fontWeight = "bold";
+    totalCell.style.backgroundColor = "#f0f8ff";
+    totalCell.style.padding = "12px";
+    totalCell.style.textAlign = "right";
+    totalCell.style.fontSize = "1.15em";
+    totalCell.textContent = `Total: ₹ ${total.toFixed(2)}`;
+
+    totalRow.appendChild(totalCell);
+    table.appendChild(totalRow);
+
+  
 };
 
 getSumBtn.addEventListener("click", getSum);
