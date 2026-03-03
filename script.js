@@ -4,46 +4,38 @@ document.body.appendChild(getSumBtn);
 
 const getSum = () => {
 //Add your code here
-const priceCells = document.querySelectorAll("td.prices");
+console.log("All td elements:", document.querySelectorAll("td").length);
+    console.log("All elements with class containing 'price':",
+        document.querySelectorAll("[class*='price']").length);
+
+    const candidates = document.querySelectorAll("[class*='price'], .prices, td:nth-child(2)");
+    console.log("Possible price cells:", candidates.length);
+    candidates.forEach((el, i) => {
+        console.log(`Candidate ${i}:`, el.outerHTML.substring(0, 120));
+    });
+    // ─────────────────────────────────────────────────────────────────────
+
+   
+    const priceCells = document.querySelectorAll(".price");  
 
     let total = 0;
-
     priceCells.forEach(cell => {
-        // Get text, remove any extra spaces, convert to number
-        const text = cell.textContent.trim();
-        const price = parseFloat(text);
-
-        // Only add valid numbers
-        if (!isNaN(price)) {
-            total += price;
-        }
+        const val = parseFloat(cell.textContent.trim()) || 0;
+        total += val;
     });
 
-    // Optional: remove any previous total row (so we don't keep adding more)
-    const oldTotalRow = document.querySelector("#total-price-row");
-    if (oldTotalRow) {
-        oldTotalRow.remove();
-    }
+    
+    document.querySelector("#total-price-row")?.remove();
 
-    // Create new total row
-    const table = document.querySelector("table");
-    if (!table) return;
+    const tr = document.createElement("tr");
+    tr.id = "total-price-row";
+    const td = document.createElement("td");
+    td.colSpan = 2;
+    td.style.cssText = "font-weight:bold; font-size:1.1em; background:#e6f3ff; padding:12px; text-align:right;";
+    td.textContent = `Total: ₹${total.toFixed(2)}`;
 
-    const totalRow = document.createElement("tr");
-    totalRow.id = "total-price-row";
-
-    const totalCell = document.createElement("td");
-    totalCell.colSpan = 2;           // spans both columns
-    totalCell.style.fontWeight = "bold";
-    totalCell.style.fontSize = "1.1em";
-    totalCell.style.backgroundColor = "#e6f3ff";
-    totalCell.style.padding = "12px";
-    totalCell.style.textAlign = "right";
-
-    totalCell.textContent = `Total: ₹${total.toFixed(2)}`;
-
-    totalRow.appendChild(totalCell);
-    table.appendChild(totalRow);
+    tr.appendChild(td);
+    document.querySelector("table")?.appendChild(tr);
   
 };
 
