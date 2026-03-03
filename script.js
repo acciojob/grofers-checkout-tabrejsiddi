@@ -7,7 +7,7 @@ ans.id = "ans";
 document.body.appendChild(ans);
 
 const getSum = () => {
-  const prices = document.querySelectorAll(".price");
+  const prices = document.querySelectorAll(".prices");
   let total = 0;
 
   prices.forEach(price => {
