@@ -4,38 +4,26 @@ document.body.appendChild(getSumBtn);
 
 const getSum = () => {
 //Add your code here
-console.log("All td elements:", document.querySelectorAll("td").length);
-    console.log("All elements with class containing 'price':",
-        document.querySelectorAll("[class*='price']").length);
+  const prices = document.querySelectorAll(".prices");
+  let total = 0;
 
-    const candidates = document.querySelectorAll("[class*='price'], .prices, td:nth-child(2)");
-    console.log("Possible price cells:", candidates.length);
-    candidates.forEach((el, i) => {
-        console.log(`Candidate ${i}:`, el.outerHTML.substring(0, 120));
-    });
-    // ─────────────────────────────────────────────────────────────────────
+  prices.forEach(price => {
+    total += parseFloat(price.textContent);
+  });
 
-   
-    const priceCells = document.querySelectorAll(".price");  
+  const existingTotal = document.getElementById("total-row");
+  if (existingTotal) existingTotal.remove();
 
-    let total = 0;
-    priceCells.forEach(cell => {
-        const val = parseFloat(cell.textContent.trim()) || 0;
-        total += val;
-    });
+  const table = document.querySelector("table");
+  const newRow = document.createElement("tr");
+  newRow.id = "total-row";
 
-    
-    document.querySelector("#total-price-row")?.remove();
+  const newCell = document.createElement("td");
+  newCell.setAttribute("colspan", "2");
+  newCell.textContent = total;
 
-    const tr = document.createElement("tr");
-    tr.id = "total-price-row";
-    const td = document.createElement("td");
-    td.colSpan = 2;
-    td.style.cssText = "font-weight:bold; font-size:1.1em; background:#e6f3ff; padding:12px; text-align:right;";
-    td.textContent = `Total: ₹${total.toFixed(2)}`;
-
-    tr.appendChild(td);
-    document.querySelector("table")?.appendChild(tr);
+  newRow.appendChild(newCell);
+  table.appendChild(newRow);
   
 };
 
